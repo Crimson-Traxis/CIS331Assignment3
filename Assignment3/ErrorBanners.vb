@@ -7,8 +7,17 @@
         errorBanner.Append(Environment.NewLine)
         errorBanner.Append("****************************************************")
         errorBanner.Append(Environment.NewLine)
+        Return errorBanner.ToString()
+    End Function
+
+    Public Shared Function SaveFileError() As String
+        Dim errorBanner As Text.StringBuilder = New Text.StringBuilder()
+        errorBanner.Append("****************************************************")
         errorBanner.Append(Environment.NewLine)
-        errorBanner.Append("** Application will exit -- press and key to exit **")
+        errorBanner.Append("** Could not save output file in spcified folder! **")
+        errorBanner.Append(Environment.NewLine)
+        errorBanner.Append("****************************************************")
+        errorBanner.Append(Environment.NewLine)
         Return errorBanner.ToString()
     End Function
 End Class
