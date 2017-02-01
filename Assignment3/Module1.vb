@@ -1,8 +1,45 @@
-﻿Imports System.IO
+﻿'------------------------------------------------------------ 
+'-                File Name : Module1.vb                    - 
+'-                Part of Project: Assignment 3             - 
+'------------------------------------------------------------
+'-                Written By: Trent Killinger               - 
+'-                Written On: 1-25-17                       - 
+'------------------------------------------------------------ 
+'- File Purpose:                                            - 
+'-                                                          - 
+'- This file is contains the main sub that gets ran when    -
+'- the program starts                                       -
+'------------------------------------------------------------
+'- Variable Dictionary                                      - 
+'- (none)                                                   -
+'------------------------------------------------------------
+
+Imports System.IO
 Imports System.Text
 
 Module Module1
-
+    '------------------------------------------------------------ 
+    '-                Subprogram Name: Main                     - 
+    '------------------------------------------------------------
+    '-                Written By: Trent Killinger               - 
+    '-                Written On: 1-25-17                       - 
+    '------------------------------------------------------------
+    '- Subprogram Purpose:                                      - 
+    '-                                                          - 
+    '- This subroutine asks the user for a file to read,        -
+    '- computes the letter occurance, then asks the user if they-
+    '- want to view the results                                 -
+    '------------------------------------------------------------ 
+    '- Parameter Dictionary:                                    - 
+    '- (None)                                                   - 
+    '------------------------------------------------------------ 
+    '- Local Variable Dictionary:                               - 
+    '- characterCount - array that stores the char counts       -
+    '- userInput - users input                                  -
+    '- fileString - contents of file to read                    -
+    '- output - output of analyzed file                         -
+    '- savedFile - true if file save was completed withoug error-
+    '------------------------------------------------------------
     Sub Main()
         '0-25 a-z
         '26 is not alphabetic
@@ -60,6 +97,25 @@ Module Module1
         Console.ReadKey()
     End Sub
 
+    '------------------------------------------------------------ 
+    '-                Subprogram Name: AddCharacterToArray      - 
+    '------------------------------------------------------------
+    '-                Written By: Trent Killinger               - 
+    '-                Written On: 1-25-17                       - 
+    '------------------------------------------------------------
+    '- Subprogram Purpose:                                      - 
+    '-                                                          - 
+    '- This subroutine adds the characters to the passed array  -
+    '- 0-25 is for alphabetical value index 26 for other        -
+    '------------------------------------------------------------ 
+    '- Parameter Dictionary:                                    - 
+    '- character - character to add to array                    -
+    '- characterCountAray - array that stores character count   -
+    '------------------------------------------------------------ 
+    '- Local Variable Dictionary:                               - 
+    '- index - index to incriment character count               -
+    '- asciiCode - characger ascii value                        -
+    '------------------------------------------------------------
     Public Sub AddCharacterToArray(character As Char, characterCountAray() As Integer)
         Dim index As Integer = 0
         Dim asciiCode As Integer = Asc(character)
@@ -71,6 +127,30 @@ Module Module1
         characterCountAray(index) = characterCountAray(index) + 1
     End Sub
 
+    '------------------------------------------------------------ 
+    '-                Function Name: AnalyzeArray               - 
+    '------------------------------------------------------------
+    '-                Written By: Trent Killinger               - 
+    '-                Written On: 1-25-17                       - 
+    '------------------------------------------------------------
+    '- Function Purpose:                                        - 
+    '-                                                          - 
+    '- This function analyzes the array and returns the         -
+    '- character count for alpha and non alpah characters,      -
+    '- highest letter count, lowest letter count, lowest letter -
+    '- count character list, highest letter count character list-
+    '- , and the alphabetic list                                -
+    '------------------------------------------------------------ 
+    '- Parameter Dictionary:                                    - 
+    '- characterCountAray - array that stores character count   -
+    '------------------------------------------------------------ 
+    '- Local Variable Dictionary:                               - 
+    '- analysis - struct containing analysis data               -
+    '- alphabeticalCount - count of aphabetical characters      -
+    '------------------------------------------------------------
+    '- Returns                                                  - 
+    '- analysis of characterCountAray                           - 
+    '------------------------------------------------------------
     Public Function AnalyzeArray(characterCountAray() As Integer) As CharacterAnalysis
         Dim analysis As CharacterAnalysis
         With analysis
@@ -82,7 +162,7 @@ Module Module1
             .lowestLetterUtilizationList = New List(Of Char)
             .alphabeticList = New List(Of Tuple(Of Char, Integer))
         End With
-        Dim count As Integer = 0
+        Dim alphabeticalCount As Integer = 0
         For index As Integer = 0 To characterCountAray.Length - 2
             If characterCountAray(index) >= analysis.highestLetterUtilizationCount Then
                 If characterCountAray(index) > analysis.highestLetterUtilizationCount Then
@@ -103,13 +183,38 @@ Module Module1
                 End If
             End If
             analysis.alphabeticList.Add(Tuple.Create(Of Char, Integer)(Chr(index + 65), characterCountAray(index)))
-            count += characterCountAray(index)
+            alphabeticalCount += characterCountAray(index)
         Next
-        analysis.alphabeticalCount = count
+        analysis.alphabeticalCount = alphabeticalCount
         analysis.nonAlphabeticalCount = characterCountAray(characterCountAray.Length - 1)
         Return analysis
     End Function
 
+    '------------------------------------------------------------ 
+    '-                Function Name: PrintAnalysis              - 
+    '------------------------------------------------------------
+    '-                Written By: Trent Killinger               - 
+    '-                Written On: 1-25-17                       - 
+    '------------------------------------------------------------
+    '- Function Purpose:                                        - 
+    '-                                                          - 
+    '- This Function creates the output inorder of highest      -
+    '- occurance or alphabetical.                               -
+    '------------------------------------------------------------ 
+    '- Parameter Dictionary:                                    - 
+    '- analysis - analysis struct containing analysis data      -
+    '- printOrdered - print output in based on occuracne        -
+    '------------------------------------------------------------ 
+    '- Local Variable Dictionary:                               - 
+    '- output - stringbuilder for console output                -
+    '- headerStartLocation - where to print header              -
+    '- statsHeader - the stats header                           -
+    '- leftPaddingValue - left padding for character count      -
+    '-                    coulumn                               -
+    '------------------------------------------------------------
+    '- Returns                                                  - 
+    '- output as string                                         - 
+    '------------------------------------------------------------
     Public Function PrintAnalysis(analysis As CharacterAnalysis, printOrdered As Boolean) As String
         If printOrdered Then
             analysis.alphabeticList.Sort(Function(p As Tuple(Of Char, Integer), q As Tuple(Of Char, Integer)) q.Item2.CompareTo(p.Item2))
