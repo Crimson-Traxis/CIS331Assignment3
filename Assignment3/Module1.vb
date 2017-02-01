@@ -128,16 +128,12 @@ Module Module1
         output.AppendLine("There were a total of " + (analysis.nonAlphabeticalCount + analysis.alphabeticalCount).ToString() + " characters processed.")
         output.AppendLine(analysis.alphabeticalCount.ToString() + " were letters and " + analysis.nonAlphabeticalCount.ToString() + " were other characters.")
         output.AppendLine("")
-        Dim scaleFactor As Double = 1
-        If analysis.highestLetterUtilizationCount > 0 Then
-            scaleFactor = (Console.WindowWidth * 0.65) / analysis.highestLetterUtilizationCount
-        End If
         Dim leftPaddingValue As Integer = analysis.highestLetterUtilizationCount.ToString().Count
         For Each character As Tuple(Of Char, Integer) In analysis.alphabeticList
             output.Append(character.Item1.ToString() + " : ")
             output.Append(character.Item2.ToString().PadLeft(leftPaddingValue, "0") + " ")
             output.Append(" " + String.Format("{0,-9:p}", character.Item2 / analysis.alphabeticalCount) + " ")
-            output.Append(New String("*", character.Item2 * scaleFactor))
+            output.Append(New String("*", (character.Item2 / analysis.alphabeticalCount) * (Console.WindowWidth * 0.9)))
             output.AppendLine("")
         Next
         output.AppendLine("")
